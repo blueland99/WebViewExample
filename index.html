@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebView Test</title>
+</head>
+<body>
+    <h1>WebView와 브릿지 통신 테스트</h1>
+    <button onclick="sendMessageToAndroid()">안드로이드로 메시지 보내기</button>
+    <script>
+        function sendMessageToAndroid() {
+            if (window.AndroidInterface) {
+                window.AndroidInterface.postMessage("나야, Web");
+            }
+        }
+        
+        function receiveMessageFromAndroid(message) {
+            alert("안드로이드에서 받은 메시지: " + message);
+        }
+    </script>
+</body>
+</html>
