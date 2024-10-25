@@ -3,20 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebView Test</title>
+    <title>WebView Test with File and Image Selection</title>
 </head>
 <body>
-    <h1>WebView와 브릿지 통신 테스트</h1>
+    <h1>WebView 예제</h1>
+    
+    <!-- 안드로이드로 메시지 보내기 버튼 -->
     <button onclick="sendMessageToAndroid()">안드로이드로 메시지 보내기</button>
+    <br><br>
+    
+    <!-- 단일 사진 선택 -->
+    <label for="singleImageInput">단일 사진 선택:</label>
+    <input type="file" id="singleImageInput" accept="image/*" onchange="handleSingleImage(event)">
+    <br><br>
+
+    <!-- 다중 사진 선택 -->
+    <label for="multipleImageInput">다중 사진 선택:</label>
+    <input type="file" id="multipleImageInput" accept="image/*" multiple onchange="handleMultipleImages(event)">
+    <br><br>
+
+    <!-- 단일 파일 선택 -->
+    <label for="singleFileInput">단일 파일 선택:</label>
+    <input type="file" id="singleFileInput" onchange="handleSingleFile(event)">
+    <br><br>
+
+    <!-- 다중 파일 선택 -->
+    <label for="multipleFileInput">다중 파일 선택:</label>
+    <input type="file" id="multipleFileInput" multiple onchange="handleMultipleFiles(event)">
+    
+    <h2>파일 정보</h2>
+    <ul id="fileList"></ul>
+
     <script>
+        // Android로 메시지 보내기 함수
         function sendMessageToAndroid() {
             if (window.AndroidInterface) {
                 window.AndroidInterface.postMessage("나야, Web");
             }
         }
-        
+
+        // Android에서 메시지 받는 함수
         function receiveMessageFromAndroid(message) {
             alert("안드로이드에서 받은 메시지: " + message);
+        }
+
+        // 단일 사진 선택 처리
+        function handleSingleImage(event) {
+            const file = event.target.files[0];
+            const fileList = document.getElementById("fileList");
+            fileList.innerHTML = ""; // 기존 목록 초기화
+
+            if (file) {
+                const listItem = document.createElement("li");
+                listItem.textContent = `사진 이름: ${file.name}, 크기: ${file.size} bytes`;
+                fileList.appendChild(listItem);
+            }
+        }
+
+        // 다중 사진 선택 처리
+        function handleMultipleImages(event) {
+            const files = event.target.files;
+            const fileList = document.getElementById("fileList");
+            fileList.innerHTML = ""; // 기존 목록 초기화
+
+            Array.from(files).forEach(file => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `사진 이름: ${file.name}, 크기: ${file.size} bytes`;
+                fileList.appendChild(listItem);
+            });
+        }
+
+        // 단일 파일 선택 처리
+        function handleSingleFile(event) {
+            const file = event.target.files[0];
+            const fileList = document.getElementById("fileList");
+            fileList.innerHTML = ""; // 기존 목록 초기화
+
+            if (file) {
+                const listItem = document.createElement("li");
+                listItem.textContent = `파일 이름: ${file.name}, 크기: ${file.size} bytes`;
+                fileList.appendChild(listItem);
+            }
+        }
+
+        // 다중 파일 선택 처리
+        function handleMultipleFiles(event) {
+            const files = event.target.files;
+            const fileList = document.getElementById("fileList");
+            fileList.innerHTML = ""; // 기존 목록 초기화
+
+            Array.from(files).forEach(file => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `파일 이름: ${file.name}, 크기: ${file.size} bytes`;
+                fileList.appendChild(listItem);
+            });
         }
     </script>
 </body>
